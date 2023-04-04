@@ -6,6 +6,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.ActivityManager;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -30,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     TextView country,city,address,longitude,latitude;
     Button getLocation;
     private  final  static int REQUEST_CODE=100;
-
+    private  final  static int REQUEST_CODE1=99;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +58,43 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private boolean islocationservicerunning(){
+        ActivityManager activityManager =  (ActivityManager)  getSystemService(Context.ACTIVITY_SERVICE);
+        if(activityManager != null)
+        {
+            for(ActivityManager.RunningServiceInfo service : activityManager.getRunningServices(Integer.MAX_VALUE))
+            {
+                if(LocationService.class.getName().equals((service.service.getClassName()))){
+                    if(service.foreground)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return  false;
+        }
+        return false;
+    }
+    private boolean checkPermission()
+    {
+        int result = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
+        int result1 = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION);
+        boolean b = (result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED) ;
+        return b;
+    }
+    private void requestPermission() {
+        ActivityCompat.requestPermissions(MainActivity.this, new String[]
+                {Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_CODE);
+        ActivityCompat.requestPermissions(MainActivity.this, new String[]
+                {Manifest.permission.ACCESS_COARSE_LOCATION},REQUEST_CODE1);
+    }
+
     private void getLastLocation() {
+
+        if (!checkPermission()) {
+            requestPermission();
+        }
+
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
 
             fusedLocationProviderClient.getLastLocation()
@@ -78,16 +117,26 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
                     });
+            if(!islocationservicerunning())
+            {
+                Intent intent = new Intent(getApplicationContext(), LocationService.class);
+                String ACTION_START_LOCATION_SERVICE = "startLocationService";
+                intent.setAction(ACTION_START_LOCATION_SERVICE);
+                startService(intent);
+                Toast.makeText(this, "LOCATION SERVICE RUNNING", Toast.LENGTH_SHORT).show();
+            }
         }else
         {
-            askPermission();
+            requestPermission();
         }
     }
 
-    private void askPermission() {
-        ActivityCompat.requestPermissions(MainActivity.this, new String[]
-                {Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_CODE);
-    }
+//    private void askPermission() {
+//        ActivityCompat.requestPermissions(MainActivity.this, new String[]
+//                {Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_CODE);
+//        ActivityCompat.requestPermissions(MainActivity.this, new String[]
+//                {Manifest.permission.ACCESS_BACKGROUND_LOCATION},REQUEST_CODE1);
+//    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

@@ -14,9 +14,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 import java.text.DateFormat;
 import java.util.Calendar;
+import java.util.Map;
 
 public class RegisterUser extends AppCompatActivity {
 
@@ -53,8 +56,29 @@ public class RegisterUser extends AppCompatActivity {
 
         String currentDate = DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
 
-        FirebaseDatabase.getInstance().getReference("APP DATA").child(currentDate)
-                .setValue(data).addOnCompleteListener(new OnCompleteListener<Void>() {
+//        FirebaseDatabase.getInstance().getReference("APP DATA").child(currentDate)
+//                .setValue(data).addOnCompleteListener(new OnCompleteListener<Void>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<Void> task) {
+//                        if (task.isSuccessful()){
+//                            Toast.makeText( RegisterUser.this, "Saved", Toast.LENGTH_SHORT).show();
+//                            Intent i = new Intent(RegisterUser.this,StudentHome.class);
+//                            startActivity(i);
+//                            finish();
+//                        }
+//                    }
+//                }).addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        Toast.makeText(RegisterUser.this, e.getMessage().toString(), Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("STUDENT DATA").document("IMTECH").collection("2020").document("29")
+                .set(data, SetOptions.merge())
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()){
