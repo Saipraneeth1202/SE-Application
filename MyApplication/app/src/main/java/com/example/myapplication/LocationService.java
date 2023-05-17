@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 import android.app.Service;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.IBinder;
 import android.os.Looper;
@@ -54,50 +55,18 @@ public class LocationService extends Service {
     }
 
     public void updateLatLongData(double lat, double lon){
-        String course = "IMTECH";
-        String year = "2020";
-        String Roll = "29";
 
-//        FirebaseDatabase.getInstance().getReference("STUDENT DATA").child(course).child(year).child(Roll).child("LAT")
-//                .setValue(lat).addOnCompleteListener(new OnCompleteListener<Void>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<Void> task) {
-//                        if (task.isSuccessful()){
-//                            System.out.println("Success");
-//                            // Intent i = new Intent(RegisterUser.this,StudentHome.class);
-//                            // startActivity(i);
-//                            // finish();
-//                        }
-//                    }
-//                }).addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        Toast.makeText(LocationService.this, e.getMessage().toString(), Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//        FirebaseDatabase.getInstance().getReference("STUDENT DATA").child(course).child(year).child(Roll).child("LONG")
-//                .setValue(lon).addOnCompleteListener(new OnCompleteListener<Void>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<Void> task) {
-//                        if (task.isSuccessful()){
-//                            System.out.println("Success");
-//                            // Intent i = new Intent(RegisterUser.this,StudentHome.class);
-//                            // startActivity(i);
-//                            // finish();
-//                        }
-//                    }
-//                }).addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        Toast.makeText(LocationService.this, e.getMessage().toString(), Toast.LENGTH_SHORT).show();
-//                    }
-//                });
+        SharedPreferences getShrd = getSharedPreferences("UserData", MODE_PRIVATE);
 
-        // Using Firestore
+        String course = getShrd.getString("COURSE", "IMTECH");
+        String year = getShrd.getString("YEAR", "2020 ");;
+        String Roll = getShrd.getString("ID", "20MCME29");;
+
+        // Using FireStore
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        db.collection("STUDENT DATA").document("IMTECH").collection("2020").document("29").update("LAT", lat)
+        db.collection("STUDENT DATA").document(course).collection(year).document(Roll).update("LAT", lat)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -114,7 +83,7 @@ public class LocationService extends Service {
                         Toast.makeText(LocationService.this, e.getMessage().toString(), Toast.LENGTH_SHORT).show();
                     }
                 });
-        db.collection("STUDENT DATA").document("IMTECH").collection("2020").document("29").update("LON", lon)
+        db.collection("STUDENT DATA").document(course).collection(year).document(Roll).update("LON", lon)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

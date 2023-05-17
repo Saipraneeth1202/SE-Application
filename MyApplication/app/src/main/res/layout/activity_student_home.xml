@@ -4,26 +4,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/img"
     tools:context=".StudentHome">
 
-    <Button
-        android:id="@+id/CheckAtt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="CHECK ATTENDANCE"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_margin="50dp">
 
-    <Button
-        android:id="@+id/location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="VIEW MY LOCATION"
-        app:layout_constraintBottom_toBottomOf="@id/CheckAtt"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <Button
+            android:id="@+id/CheckAtt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CHECK ATTENDANCE" />
+
+        <Button
+            android:id="@+id/location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="VIEW MY LOCATION" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">S A M A T S</string>
 
     <string-array name="COURSES">
         <item>IMTECH</item>
@@ -8,12 +8,27 @@
         <item>PHD</item>
     </string-array>
 
-    <string-array name="COURSE_CODES">
-        <item>MCME</item>
-        <item>MCMC</item>
-        <item>MCMT</item>
-        <item>MCPC</item>
+
+    <string-array name="YEAR">
+        <item>2017</item>
+        <item>2018</item>
+        <item>2019</item>
+        <item>2020</item>
+        <item>2021</item>
+        <item>2022</item>
+        <item>2023</item>
     </string-array>
+
+    <!--    <string-array name="COURSE_CODES">-->
+    <!--        <item>MCME</item>-->
+    <!--        <item>MCMC</item>-->
+    <!--        <item>MCMT</item>-->
+    <!--        <item>MCPC</item>-->
+    <!--    </string-array>-->
+    <!--    -->
+
+    <string name="default_notification_channel_id">my_channel_id</string>
+
     <string name="title_activity_register">Register</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
